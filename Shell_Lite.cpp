@@ -5,6 +5,14 @@
 #include <fstream>
 #include <unistd.h>  
 #include <sys/wait.h>
+
+int exitWithError()
+{
+    std:: cout << "An Error Occured";
+    exit(0);
+    return -1;
+}
+
 int main()
 {
     pid_t pid;
@@ -24,16 +32,13 @@ int main()
                 std::stringstream ss(args);
                 while (ss >> token)
                 { 
+                    token.length() > 256 ? exitWithError() : 0; 
                     if(token.find(".c")!= std::string::npos)
                         argv.push_back(strdup("g++"));
                     argv.push_back(strdup(token.c_str())); 
                 }
                 argv.push_back(nullptr); 
-                if(execvp(argv[0],argv.data()) == -1)
-                { 
-                    std:: cout << "An Error Occured";
-                    return -1;
-                }
+                (execvp(argv[0],argv.data()) == -1) ? exitWithError() : 0;
             }
             
         else 
