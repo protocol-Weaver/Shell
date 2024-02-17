@@ -18,7 +18,6 @@ int main()
     pid_t pid;
     int status, MODE;
     (isatty(STDIN_FILENO)) ? MODE = 1 : MODE = 0;
-    //std::cin.ignore();
     std::ifstream fin("commands.txt");
     while(true){
         pid = fork();
