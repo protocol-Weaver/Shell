@@ -16,10 +16,9 @@ int exitWithError()
 int main()
 {
     pid_t pid;
-    int status, MODE = 1;
-    std::cout << "Enter Mode (Console 1 and Batch 2) \n";
-    std::cin >> MODE;
-    std::cin.ignore();
+    int status, MODE;
+    (isatty(STDIN_FILENO)) ? MODE = 1 : MODE = 0;
+    //std::cin.ignore();
     std::ifstream fin("commands.txt");
     while(true){
         pid = fork();
@@ -33,7 +32,7 @@ int main()
                 while (ss >> token)
                 { 
                     token.length() > 256 ? exitWithError() : 0; 
-                    if(token.find(".c")!= std::string::npos)
+                    if(token[token.length()-1] == 'c' && token[token.length()-2] == '.' )
                         argv.push_back(strdup("g++"));
                     argv.push_back(strdup(token.c_str())); 
                 }
